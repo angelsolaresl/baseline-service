@@ -32,60 +32,34 @@ public class CompoundInterestCalculatorImpl implements CompoundInterestCalculato
    */
   @Override
   public List<InvestmentYieldDto> createRevenueGrid(InitialInvestmentDto initialInvestmentDto) {
-    // Integer investmentYear =0;
-    // Double initialInvestment= 0.0;
-    // Double yearlyInput =0.0;
-    // Double investmentYield= Double.valueOf(initialInvestmentDto.getYearlyInputIncrement());
-    // Double finalBalance=0.0;
-    // Double investmentAccum= 0.0;
-    //
-    //
-    // ArrayList<InvestmentYieldDto> gridInvestmentYield = new ArrayList<>();
-    //
-    // for (int i = 0; i < initialInvestmentDto.getInvestmentYears(); i++) {
-    // investmentYear++;
-    // initialInvestment = initialInvestmentDto.getInitialInvestment();//año inversion ininicial
-    //
-    // yearlyInput += (yearlyInput) *
-    // (Double.valueOf(1+(initialInvestmentDto.getYearlyInputIncrement()/100)));
-    //
-    // investmentYield = (investmentAccum + yearlyInput) * (investmentYield/100);
-    // finalBalance = investmentAccum + yearlyInput + investmentYield;
-    // investmentAccum = investmentAccum + initialInvestment;
-    // gridInvestmentYield.add(new InvestmentYieldDto(investmentYear, investmentAccum,
-    // yearlyInput,investmentYield, finalBalance));
+  Integer investmentYear = 0;
+  Double initialInvestment = 0.00;
+  Double yearlyInput = 0.00;
+  Double investmentYield = 0.00;
+  Double finalBalance = 0.00;
 
-    Integer investmentYear = 0;
-    Double initialInvestment = 0.0;
-    Double yearlyInput = 0.0;
-    Double investmentYield = 0.0;
-    Double finalBalance = 0.0;
-    Double aux = 0.0;
+  ArrayList<InvestmentYieldDto> investmentYieldList = new ArrayList<>();
+  double aux = 0.00;
+  for (int i = 0; i < initialInvestmentDto.getInvestmentYears(); i++) {
+    investmentYear = i + 1;
+    yearlyInput = initialInvestmentDto.getYearlyInput() + aux;
+    aux += yearlyInput * initialInvestmentDto.getYearlyInputIncrement() / 100;
+    aux = Math.ceil(aux);
 
-    ArrayList<InvestmentYieldDto> investmentYieldList = new ArrayList<>();
-
-    for (int i = 0; i < initialInvestmentDto.getInvestmentYears(); i++) {
-
-      investmentYear++;
-
-      yearlyInput = initialInvestmentDto.getYearlyInput() + aux;
-      aux += yearlyInput * initialInvestmentDto.getYearlyInputIncrement() / 100;
-
-
-      initialInvestment += initialInvestmentDto.getInitialInvestment();
-
-      initialInvestment += finalBalance;
-
-      investmentYield =
-          (initialInvestment + yearlyInput) * initialInvestmentDto.getInvestmentYield();
-
-      finalBalance = initialInvestment + yearlyInput + investmentYield;
-
-      investmentYieldList.add(new InvestmentYieldDto(investmentYear, initialInvestment, yearlyInput,
-          investmentYield, finalBalance));
+    if (i == 0) {
+      initialInvestment = initialInvestmentDto.getInitialInvestment();
+    } else if (i > 0) {
+      initialInvestment = finalBalance;
     }
 
-    return investmentYieldList;
+    investmentYield =
+       (initialInvestment + yearlyInput) * initialInvestmentDto.getInvestmentYield();
+    finalBalance = initialInvestment + yearlyInput + investmentYield;
+    investmentYieldList.add(new InvestmentYieldDto(investmentYear, initialInvestment, yearlyInput,
+        investmentYield, finalBalance));
+  }
+
+  return investmentYieldList;
   }
 
 
