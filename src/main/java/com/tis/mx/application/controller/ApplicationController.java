@@ -30,6 +30,7 @@ public class ApplicationController {
   /** The calculator. */
   private CompoundInterestCalculator calculator;
 
+  
   /**
    * Instantiates a new application controller.
    *
